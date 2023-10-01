@@ -40,18 +40,50 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
 
     RoomRepository repo = new RoomRepository();
     var room = await repo.GetRoom(request.RoomName);
-    if (room == null)
+    if (room == Room.Empty)
     {
-        return Results.BadRequest("Unable to find the user's room");
+        return Results.BadRequest($"Unable to find the room {request.RoomName}");
     }
+    User? user = null;
+    try
+    {
+        user = room.Users.First(u => u.Token == request.UserToken.ToLower());
+    } catch (Exception ex)
+    {
+        if (ex is InvalidOperationException aex)
+        {
+            return Results.BadRequest($"Unable to find user");
+        }
+        return Results.BadRequest($"Finding User Error {ex.Message}");        
+    }
+    if (user.FoundItems.Any(i => i.ToLower() == request.ImageName.ToLower()))
+    {
+        return Results.BadRequest($"User {user.Name} has already found {request.ImageName}");
+    }
+
     // Convert byte array to string(s) (This example assumes UTF-8 encoding).
     try
     {
-
         var bytes = Convert.FromBase64String(request.ImageBytesAsString);
         var response = Requester.IdentifyLabelsByByte(bytes);
         var serialized = System.Text.Json.JsonSerializer.Serialize(response);
-        return Results.Ok(serialized);
+
+        //Success update database
+        user.FoundItems.Add(request.ImageName);
+        var message = string.Empty;
+        if (room.Items.All(i => i.ToLower() == request.ImageName.ToLower()))
+        {
+            message = $"{user.Name} IS THE WINNER";
+        }
+        await repo.UpdateRoom(room);
+        FoundImageResponse resultResponse = new FoundImageResponse()
+        {
+            RoomName = room.RoomName,
+            Users = room.Users,
+            Items = room.Items,
+            Message = message
+        };
+        return Results.Ok(resultResponse);
     }
     catch (Exception ex)
     {
