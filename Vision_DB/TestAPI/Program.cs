@@ -111,7 +111,7 @@ app.MapPost("/join", async (JoinRequest request) =>
         room.Items.Add("Mouse");
         room.Items.Add("Waste container");
         var result = await repo.CreateRoom(room);
-        if (string.IsNullOrEmpty(result))
+        if (!string.IsNullOrEmpty(result))
         {
             return Results.Conflict(result);
         }
