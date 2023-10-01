@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hackrtcdumpling",
+  "private_key_id": "83a1eda380243783e0fdb6f40359daba326fe85b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDnsmfJeTJy6dHN\nBFj4ZtRREkfqtUcB6m6SNIaDPsg9YhbyV1s8L031k9V4ZMziaY/4JPPdv2LPOIHX\nWvybdea7R/okMBS5+fx7H478lycIw+tii8sw1MD33gxkGje2gOzisny4SWf3gvUa\nIeVE4ktthSdJfB1zqwWfMEaEwWNbewtUpRbJgBoKpbVZArEtfM4rv8SUgZ+y1uMq\nEmIFKZAeSODE6clNuI+9cBYSAt8UCWoL2W6Ol0oola5LMY5q8dvKglFDsP8no69w\nS8ihT0A8O4cNgVV9GdX3WRqw+myrYeG9pb9FUCGapAFBybUOMNgs6ld4XRGAz945\n4U4vR4FBAgMBAAECggEABY3WRRMdrXmDaPm4tEOqxUK97Jdp21bmTaTqsIy5uhb2\n29pSOpAbu05O6LLp4meLZvRj0CX9VWBSZHou4f8ih8zC50krxgWDEuR/xfhNnD0u\nEE+vkD0ZXxe4jlG+kiZnB0wmBzjjQCCohXbYix0tl7OAbJeIETTBTr6Wgiosmo29\n25kev6zSafqC12p7icGC61QsNGpqCBWKdcSZu+JZSDPqcy/tIF37Bxa2KDdE9Nzi\njf8BjK0dS6k9Q/TRxxbC/fHACsZTSOc25BoeJqmvylKhq+WyZgB//9slajb30F5b\nX3QTsgo6k4R7fcsI3K5li29eAYeTVk6+oAA7j8NnEQKBgQD0/5eSj55BhbMavg3M\nj5qUcIczU7gnGgDxeAiRM69sQGkBv4dLwo6mWdXNUwuKhJq0Lbe9AjsLfyD1QXyk\nV9/jqMhNkVwaaP6tIYzSZK/W2EntnfpihpX1mCrCSh0Tj0rR43WXdKJcvS8FieB7\nw4V2jfzEaqNajy4Gxe4hijVvfQKBgQDyGed9539oRt/kwtPSKgQChCCwcbwy70VQ\nz1wwOuUCsn8iJB8jtVnrK5bSdBnZLtOsb47Ik5XFn8Eo9IJHdjiTeXAJJsiUsoEx\nWX/bjFVbX/bQlzpQDvmHV1XmHNJDOBcao1zH0QRcIJWSkYf/Kd+nEQKGCL35Hz7w\nlthbvTGMFQKBgHBAJuc8rCqjImOPTm06In3+bMOkiQxJSsNX1r0IbEhx3mqxoUCh\n3I/1OxM/CFun0+XXyIZt3jWvQp98KKp3pJn/O/7mKcfj8UPLymSfQz1xjbW0GwNH\nXK/Qz06DfHz4uzQdPkRtaPKKr1+fQ14RQDYIahZoMX4Nee4ag7eURlVVAoGACtHv\nj6f2AMISJZYzg1QPY9Fl6JzcrWYWMftigmFPdORnXC5DGgRz5VfIYNWBhjxah31g\n40P9UJzIND1hSTJWavjlcfNCyaqEraDzXuuRsQjD7iSkHYndyxezJhqppwlttuoQ\nLnn/+OIX7ToF2viTH1NaSoU/gE/OL1B+kPMOsNUCgYARgAiZe/JP7zAkrX8EkRSU\n/Cec09thC7mXTMs+qIAmdD5cv8og38E8C90Y8/AOWCzM8vvfl8CwUuWJ38LSiyMl\nBEJ6C+7iDxmgLQx1Z1dzpsYWonJbzpEi5U45bBJEhhvy+boZr9R9EeOQpl+XesWs\n2s4e/bCjmLrQcbtjlWK6fQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "vision@hackrtcdumpling.iam.gserviceaccount.com",
+  "client_id": "116925530594507034768",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vision%40hackrtcdumpling.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

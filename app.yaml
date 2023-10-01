@@ -1,0 +1,12 @@
+runtime: nodejs16
+
+service: default
+env_variables:
+  NODE_ENV: production
+  apiKey: API3EtbcTWtcjZz
+  apiKeySecret: BRfrMkyTgDph9qBeVdV95tVnnADTDXmRlyqNOCQ0Ri4
+  MONGO_URI: mongodb+srv://admin:yhEn5VfIUnU1s0Ba@cluster0.4p9tcrz.mongodb.net/?retryWrites=true&w=majority
+
+handlers:
+  - url: /.*
+    script: auto
