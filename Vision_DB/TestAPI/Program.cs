@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using TestAPI.FoundItem;
 using TestAPI.DataAccess;
 using TestAPI.Models;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "OriginsOpen",
+        policy =>
+        {
+            policy.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+        });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("OriginsOpen");
 app.UseHttpsRedirection();
 
 
@@ -48,13 +57,14 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
     try
     {
         user = room.Users.First(u => u.Token.ToLower() == request.UserToken.ToLower());
-    } catch (Exception ex)
+    }
+    catch (Exception ex)
     {
         if (ex is InvalidOperationException aex)
         {
             return Results.BadRequest($"Unable to find user");
         }
-        return Results.BadRequest($"Finding User Error {ex.Message}");        
+        return Results.BadRequest($"Finding User Error {ex.Message}");
     }
     if (user.FoundItems.Any(i => i.ToLower() == request.ImageName.ToLower()))
     {
@@ -66,7 +76,7 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
     {
         var bytes = Convert.FromBase64String(request.ImageBytesAsString);
         var response = Requester.IdentifyLabelsByByte(bytes);
-        if(response.Any(x => x.Name.ToLower() == request.ImageName.ToLower()) == false)
+        if (response.Any(x => x.Name.ToLower() == request.ImageName.ToLower()) == false)
         {
             //the picture didn't think the object was in it 
             return Results.Ok($"Picture does not contain {request.ImageName}");
@@ -75,7 +85,7 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
         //Success update database
         user.FoundItems.Add(request.ImageName);
 
-        user.Points++; 
+        user.Points++;
         var message = string.Empty;
         if (room.Items.All(i => i.ToLower() == request.ImageName.ToLower()))
         {
