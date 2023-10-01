@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using TestAPI; 
 using System.Text;
 using static Google.Rpc.Context.AttributeContext.Types;
+using TestAPI.Join;
+using DumplingChaseDataStore;
+using Microsoft.AspNetCore.WebUtilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +73,44 @@ app.MapPost("/getInformation", (PropImage image) =>
         return Results.BadRequest("ZJ:Err:" + ex.Message + "||" + ex.InnerException); 
     }
 });
+
+
+app.MapPost("/join", async (JoinRequest request) =>
+{
+    RoomRepository repo = new RoomRepository();
+    var room = await repo.GetRoom(request.RoomName);
+    if (room == null)
+    {
+        //Create Room
+        room = new Room();
+        room.RoomName = request.RoomName;
+        User user = new User();
+        user.Name = request.UserName;
+        user.Token = request.UserToken;
+        user.Points = 0;
+        room.Users.Add(user);
+        //Get List of Items
+        room.Items.Add("Can");
+        room.Items.Add("Mouse");
+        room.Items.Add("Waste container");
+        var result = await repo.CreateRoom(room);
+        return Results.Ok(result);
+    }
+    var existUser = room.Users.FirstOrDefault(u => u.Token.ToLower() == request.UserToken.ToLower());
+    if (existUser != null)
+    {
+        return Results.Conflict("Existing user exists");
+    }
+    existUser = new User()
+    {
+        Name = request.UserName,
+        Token = request.UserToken
+    };
+    room.Users.Add(existUser);
+    await repo.UpdateRoom(room);
+    return Results.Ok(room);
+});
+
 
 app.Run();
 
