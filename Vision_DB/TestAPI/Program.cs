@@ -47,7 +47,7 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
     User? user = null;
     try
     {
-        user = room.Users.First(u => u.Token == request.UserToken.ToLower());
+        user = room.Users.First(u => u.Token.ToLower() == request.UserToken.ToLower());
     } catch (Exception ex)
     {
         if (ex is InvalidOperationException aex)
