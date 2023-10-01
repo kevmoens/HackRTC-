@@ -18,7 +18,7 @@ export const Header = () => {
       >
         <Toolbar variant="dense">
           <Typography
-            variant="h6"
+            variant="h4"
             component="div"
             sx={{ flexGrow: 1, textAlign: "center" }}
           >
