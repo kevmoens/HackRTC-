@@ -67,7 +67,12 @@ const Video = ({ userData }) => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        background: `linear-gradient(-45deg, #152238 0%, #080808 100%)`,
+        height: "100vh",
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{ width: "100%", height: "100%", display: "none" }}
@@ -111,7 +116,7 @@ const Video = ({ userData }) => {
           <div></div>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 

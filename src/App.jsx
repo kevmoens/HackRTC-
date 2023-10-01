@@ -66,7 +66,7 @@ const App = () => {
             sx={{
               marginTop: "10px",
               textAlign: "center",
-              background: "grey",
+              background: `linear-gradient(-45deg, #152238 30%, #080808 100%)`,
               padding: "20px",
             }}
           >
