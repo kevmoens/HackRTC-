@@ -1,12 +1,14 @@
 using Google.Cloud.Vision.V1;
 
 using Microsoft.AspNetCore.Mvc;
-using TestAPI; 
+using TestAPI;
 using System.Text;
 using static Google.Rpc.Context.AttributeContext.Types;
 using TestAPI.Join;
-using DumplingChaseDataStore;
 using Microsoft.AspNetCore.WebUtilities;
+using TestAPI.FoundItem;
+using TestAPI.DataAccess;
+using TestAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,50 +29,33 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-//app.MapGet("/getInformation", () =>
-//{
-
-//    //var forecast = Enumerable.Range(1, 5).Select(index =>
-//    //    new WeatherForecast
-//    //    (
-//    //        DateTime.Now.AddDays(index),
-//    //        Random.Shared.Next(-20, 55),
-//    //        summaries[Random.Shared.Next(summaries.Length)]
-//    //    ))
-//    //    .ToArray();
-//    //return forecast;
-//})
-//.WithName("TestResponse");
 
 
-//app.MapPost("/getInformation", (PropImage image) =>
-//{
-//    Console.WriteLine("here");
-//    // Convert byte array to string(s) (This example assumes UTF-8 encoding).
-//    //var response = Requester.IdentifyLabelsByByte(byteArray);
-//    //var serialized = System.Text.Json.JsonSerializer.Serialize(response);
-//    return Results.Ok("test");
-//});
-
-
-app.MapPost("/getInformation", (PropImage image) =>
+app.MapPost("/getInformation", async (FoundImageRequest request) =>
 {
-    if (image.ImageBytesAsString == null || image.ImageBytesAsString.Length == 0)
+    if (request.ImageBytesAsString == null || request.ImageBytesAsString.Length == 0)
     {
         return Results.BadRequest("Byte array cannot be null or empty.");
+    }
+
+    RoomRepository repo = new RoomRepository();
+    var room = await repo.GetRoom(request.RoomName);
+    if (room == null)
+    {
+        return Results.BadRequest("Unable to find the user's room");
     }
     // Convert byte array to string(s) (This example assumes UTF-8 encoding).
     try
     {
 
-    var bytes = Convert.FromBase64String(image.ImageBytesAsString);
-    var response = Requester.IdentifyLabelsByByte(bytes);
-    var serialized = System.Text.Json.JsonSerializer.Serialize(response);
-    return Results.Ok(serialized);
+        var bytes = Convert.FromBase64String(request.ImageBytesAsString);
+        var response = Requester.IdentifyLabelsByByte(bytes);
+        var serialized = System.Text.Json.JsonSerializer.Serialize(response);
+        return Results.Ok(serialized);
     }
-    catch(Exception ex)
+    catch (Exception ex)
     {
-        return Results.BadRequest("ZJ:Err:" + ex.Message + "||" + ex.InnerException); 
+        return Results.BadRequest("ZJ:Err:" + ex.Message + "||" + ex.InnerException);
     }
 });
 
@@ -79,7 +64,7 @@ app.MapPost("/join", async (JoinRequest request) =>
 {
     RoomRepository repo = new RoomRepository();
     var room = await repo.GetRoom(request.RoomName);
-    if (room == null)
+    if (room == Room.Empty)
     {
         //Create Room
         room = new Room();
@@ -94,7 +79,11 @@ app.MapPost("/join", async (JoinRequest request) =>
         room.Items.Add("Mouse");
         room.Items.Add("Waste container");
         var result = await repo.CreateRoom(room);
-        return Results.Ok(result);
+        if (string.IsNullOrEmpty(result))
+        {
+            return Results.Conflict(result);
+        }
+        return Results.Ok(room);
     }
     var existUser = room.Users.FirstOrDefault(u => u.Token.ToLower() == request.UserToken.ToLower());
     if (existUser != null)

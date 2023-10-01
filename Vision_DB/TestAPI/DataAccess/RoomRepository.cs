@@ -8,8 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestAPI.Models;
 
-namespace DumplingChaseDataStore
+namespace TestAPI.DataAccess
 {
     /// <summary>
     /// This is using a repository pattern where we will use a dynamodb call to add a room as a new record
@@ -28,7 +29,7 @@ namespace DumplingChaseDataStore
         {
             using var db = GetClient();
             var table = Table.LoadTable(db, _table);
-            var json = JsonConvert.SerializeObject(room,Formatting.Indented);
+            var json = JsonConvert.SerializeObject(room, Formatting.Indented);
             var item = Amazon.DynamoDBv2.DocumentModel.Document.FromJson(json);
 
             var request = new PutItemRequest
@@ -46,7 +47,7 @@ namespace DumplingChaseDataStore
             // Check if the response has any additional information
             if (response.ResponseMetadata != null)
             {
-                return "There is metadata";
+                return "";
             }
 
             // Print a confirmation message
@@ -63,7 +64,7 @@ namespace DumplingChaseDataStore
             {
                 AttributesToGet = new List<string>() { "RoomName", "Users", "Items" }
             };
-            
+
             var response = await table.GetItemAsync(roomName, config);
             if (response == null)
             {
@@ -102,9 +103,9 @@ namespace DumplingChaseDataStore
                   } }
             },
 
-            // Return the entire item as it appeared before the update.
-            ReturnValues = "ALL_OLD",
-            ExpressionAttributeNames = new Dictionary<string, string>()
+                // Return the entire item as it appeared before the update.
+                ReturnValues = "ALL_OLD",
+                ExpressionAttributeNames = new Dictionary<string, string>()
             {
                 {"#R", "RoomName"}
             },

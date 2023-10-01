@@ -1,4 +1,4 @@
-﻿namespace DumplingChaseDataStore
+﻿namespace TestAPI.Models
 {
     public class Room
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DumplingChaseDataStore
+namespace TestAPI.Models
 {
     public class User
     {
