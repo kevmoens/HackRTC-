@@ -66,14 +66,20 @@ app.MapPost("/getInformation", async (FoundImageRequest request) =>
     {
         var bytes = Convert.FromBase64String(request.ImageBytesAsString);
         var response = Requester.IdentifyLabelsByByte(bytes);
-        var serialized = System.Text.Json.JsonSerializer.Serialize(response);
+        if(response.Any(x => x.Name.ToLower() == request.ImageName.ToLower()) == false)
+        {
+            //the picture didn't think the object was in it 
+            return Results.Ok($"Picture does not contain {request.ImageName}");
+        }
 
         //Success update database
         user.FoundItems.Add(request.ImageName);
+
+        user.Points++; 
         var message = string.Empty;
         if (room.Items.All(i => i.ToLower() == request.ImageName.ToLower()))
         {
-            message = $"{user.Name} IS THE WINNER";
+            message = $"WINNER";
         }
         await repo.UpdateRoom(room);
         FoundImageResponse resultResponse = new FoundImageResponse()

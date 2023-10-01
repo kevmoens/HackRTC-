@@ -24,17 +24,17 @@ namespace TestAPI
             }
         }
 
-        public static IEnumerable<EntityAnnotation> IdentifyLabelsByByte(byte[] imageBytes)
+        public static IEnumerable<LocalizedObjectAnnotation> IdentifyLabelsByByte(byte[] imageBytes)
         {
             Image img = Image.FromBytes(imageBytes);
             return IdentifyLabels(img);
         }
 
 
-        public static IEnumerable<EntityAnnotation> IdentifyLabels(Image image)
+        public static IEnumerable<LocalizedObjectAnnotation> IdentifyLabels(Image image)
         {
             ImageAnnotatorClient client = ImageAnnotatorClient.Create();
-            return client.DetectLabels(image);
+            return client.DetectLocalizedObjects(image);
 
             //foreach (EntityAnnotation label in labels)
             //{
