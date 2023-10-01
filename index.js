@@ -121,7 +121,7 @@ app.post("/join", async (req, res) => {
       return res.json({ room });
     }
 
-    const items = ["Banana", "Mouse", "Marker"];
+    const items = ["Banana", "Tin"];
     const newRoom = await Room.create({
       roomName,
       users: [{ userToken, userName }],
